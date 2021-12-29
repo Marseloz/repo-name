@@ -1,19 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
- 
-  <title>Pupkin</title>
-  <meta name="description" content="pupkin">
- 
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
- 
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+	<meta charset="utf-8">
+	<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <style type="text/css">
+        .MathJax_Display {
+            text-align: center;
+            margin: 0em 0em!important;
+            position: relative;
+            display: block!important;
+            text-indent: 0;
+            max-width: none;
+            max-height: none;
+            min-width: 0;
+            min-height: 0;
+            width: 100%;
+        }
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        .table1 {
+            border-collapse: collapse;
+            width: 200px;
+        }
+
+        th:last-child {
+            border-left: 2px double;
+        }
+    </style>
+	<title>Калькулятор</title>
+
 </head>
- 
 <body>
-  <script src="js/scripts.js"></script>
+	<!-- поле ввода первого числа -->
+	<input id="num1" placeholder="Введите букву сегмента"/> 
+    <br><br>
+    <input id="num2" placeholder="Введите приращение"/>
+	<!-- кнопка для рассчётов -->
+    <br><br>
+	<button onclick="func()">Решение</button>
+    <p id = result></p>
+
 </body>
+    <script>
+        var items = [
+        [1,0,0,0,1,1,0,0,1,1],
+        [1,0,1,1,0,1,0,1,1,1],
+        [1,1,1,0,1,0,0,0,1,1],
+        [1,1,0,0,1,1,1,0,1,0],
+        [1,0,1,0,0,1,1,0,1,0],
+        [1,0,0,0,0,0,1,1,1,0],
+        [0,0,0,1,1,1,1,0,1,1],
+        [0,1,0,1,0,0,1,1,0,0],
+        [0,0,1,1,0,0,0,0,0,1],
+        ]
+        var num_x = [
+            [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+            [0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1],
+            [0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1],
+            [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1],
+        ]
+
+        function func() {
+            
+        // переменная для результата
+            var result;
+            // получаем первое и второе число
+            var num1 = document.getElementById("num1").value;
+            var sdvig = Number(document.getElementById("num2").value);
+
+            if(!num1) return
+            var s = 0
+            switch (num1){
+                case 'a':
+                    s=0;
+                    break;
+                case 'b':
+                    s=1;
+                    break;
+                case 'c':
+                    s=2;
+                    break;
+                case 'd':
+                    s=3;
+                    break;
+                case 'e':
+                    s=4;
+                    break;
+                case 'f':
+                    s=5;
+                    break;
+                case 'i':
+                    s=6;
+                    break;
+                case 'm':
+                    s=7;
+                    break;
+                default:
+                    
+                    return;
+            }
+            var resNum = Array(16).fill(0)
+            for(var i = 0; i < 16; i++){
+                if((i-sdvig < 10)&&(i-sdvig>=0)) resNum[i] = items[s][i-sdvig];
+            }
+            result = "<table class=\"table1\">"
+            result +="<thead><tr><th>$$x_1$$</th><th>$$x_2$$</th><th>$$x_3$$</th><th>$$x_4$$</th><th>$$"+num1+"$$</th></tr></thead><tbody>"
+            for(var i = 0; i < 16; i++){
+                result +="<tr><th>$$"+num_x[3][i]+"$$</th><th>$$"+num_x[2][i]+"$$</th><th>$$"+num_x[1][i]+"$$</th><th>$$"+num_x[0][i]+"$$</th><th>$$"+resNum[i]+"$$</th><tr>"
+            }
+            result += "</tbody>" 
+            result += "</table> <p>"+num1+"</p>"
+            document.getElementById("result").innerHTML = result;
+            window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')]);
+        }
+    </script>
 </html>
