@@ -6,6 +6,25 @@
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
     <style type="text/css">
+        button {
+            background-color: #f4511e;
+            font-size: 5.4vw;
+            border: none;
+            color: white;
+            padding: 40px 32px;
+            text-align: center;
+            margin: 4px 2px;
+            opacity: 0.6;
+            transition: 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover {opacity: 1}
+        body{
+            display: inline-flex;
+        }
         .MathJax_Display {
             text-align: center;
             margin: 0em 0em!important;
@@ -17,6 +36,9 @@
             min-width: 0;
             min-height: 0;
             width: 100%;
+        }
+        .MathJax {
+            font-size: 160%!important;
         }
         table, td, th {
             border: 1px solid black;
@@ -30,22 +52,101 @@
         th:last-child {
             border-left: 2px double;
         }
+
+        .caption-bottom {
+            margin: 50px auto 0;
+            bottom: 300px;
+            right: 100px;
+        }
+
+        .caption-bottom img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .dbox{
+            display: inline-flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+        }
+        .dbox div{
+            display: inline-flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+        }
+        h2{
+            font-size: 330%;
+        }
+
+        input {
+            font-size: 240%;
+            width: 100%;
+            padding: 38px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 3px solid #ccc;
+            -webkit-transition: 0.5s;
+            transition: 0.5s;
+            outline: none;
+        }
+
+        input:focus {
+            border: 3px solid #555;
+        }
+
     </style>
 	<title>Калькулятор</title>
 
 </head>
 <body>
-	<!-- поле ввода первого числа -->
-	<input id="num1" placeholder="Введите букву сегмента"/> 
-    <br><br>
-    <input id="num2" placeholder="Введите приращение"/>
-	<!-- кнопка для рассчётов -->
-    <br><br>
-	<button onclick="func()">Решение</button>
-    <p id = result></p>
-
+    <div class="dbox">
+        <div class="caption-bottom">
+            <img src="Z5uXeIGx1C8.jpg">
+        </div>
+        <div>
+            <!-- поле ввода первого числа -->
+            <h2>Первая контрольная</h2><br>
+            <input id="num1" placeholder="Введите букву сегмента"/> 
+            <br><br>
+            <input id="num2" placeholder="Введите избыток"/>
+            <!-- кнопка для рассчётов -->
+            <br><br>
+            <button onclick="func()">Решение</button>
+            <p id = result></p>
+        </div>
+        <div>
+            <br><br><br><br><br><br><h2>Вторая контрольная</h2><br><br>
+            <input id="value1" placeholder="Введите A"/> 
+            <br><br>
+            <input id="value2" placeholder="Введите B"/>
+            <!-- кнопка для рассчётов -->
+            <br><br>
+            <button onclick="func2()">Решение</button><br>
+            <p id = result2></p>
+        </div>
+    </div>
 </body>
     <script>
+        function convertToBinary (number) {
+            let num = Math.abs(number);
+            var buff = true;
+            if(number<0){buff = false} 
+            var bin = [num % 2]
+            for (; bin.length < 8; ) {
+                if(num > 1){
+                    num = parseInt(num / 2)
+                    bin.unshift(num % 2)
+                }
+                else{
+                    bin.unshift(0)
+                }
+            }
+            bin[0] = Number(buff);
+            console.log(bin);
+        }
+
         var items = [
         [1,0,0,0,1,1,0,0,1,1],
         [1,0,1,1,0,1,0,1,1,1],
@@ -153,5 +254,24 @@
             document.getElementById("result").innerHTML = result;
             window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')]);
         }
+        
+        function func2() {
+            var A = Number(document.getElementById("value1").value);
+            var B = Number(document.getElementById("value2").value);
+            var result = "$$A = " + A + "\\text{;           }B = " + B + "$$";
+            result += "$$A_п = ";
+            for(var i = 0; i < convertToBinary(A).length; i++){
+                 result +=convertToBinary(A)[i]
+            }
+            result += "\\textB_п = "
+            for(var i = 0; i < convertToBinary(B).length; i++){
+                 result +=convertToBinary(B)[i]
+            }
+            
+
+            document.getElementById("result2").innerHTML = result;
+            window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')]);
+        }
+    
     </script>
 </html>
