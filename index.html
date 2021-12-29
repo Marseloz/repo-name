@@ -144,6 +144,37 @@
             console.log(bin);
             return bin;
         }
+        function convertToBinary1 (number) {
+            let num = Math.abs(number);
+            var buff = false;
+            if(number<0){buff = true}
+            if(number<0){
+                var bin = [1-num % 2]
+                for (; bin.length < 8; ) {
+                    if(num > 1){
+                        num = parseInt(num / 2)
+                        bin.unshift(1-num % 2)
+                    }
+                    else{
+                        bin.unshift(1)
+                    }
+                }
+            }else{
+                var bin = [num % 2]
+                for (; bin.length < 8; ) {
+                    if(num > 1){
+                        num = parseInt(num / 2)
+                        bin.unshift(num % 2)
+                    }
+                    else{
+                        bin.unshift(0)
+                    }
+                }
+            }
+            bin[0] = Number(buff);
+            console.log(bin);
+            return bin;
+        }
 
         var items = [
         [1,0,0,0,1,1,0,0,1,1],
@@ -258,8 +289,8 @@
             var B = Number(document.getElementById("value2").value);
             var result = "$$A = " + A + "\\text{;           }B = " + B + "$$";
             result += "$$A_п = "+convertToBinary(A).join('')+ "\\qquad B_п = "+ convertToBinary(B).join('') + "\\qquad -A_п = "+convertToBinary(-A).join('')+ "\\qquad -B_п = "+ convertToBinary(-B).join('') + "$$"
+            result += "$$A_о = "+convertToBinary1(A).join('')+ "\\qquad B_о = "+ convertToBinary1(B).join('') + "\\qquad -A_о = "+convertToBinary1(-A).join('')+ "\\qquad -B_о = "+ convertToBinary1(-B).join('') + "$$"
             
-
             document.getElementById("result2").innerHTML = result;
             window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')]);
         }
