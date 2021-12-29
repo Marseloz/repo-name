@@ -37,9 +37,6 @@
             min-height: 0;
             width: 100%;
         }
-        .MathJax {
-            font-size: 160%!important;
-        }
         table, td, th {
             border: 1px solid black;
         }
@@ -131,8 +128,8 @@
     <script>
         function convertToBinary (number) {
             let num = Math.abs(number);
-            var buff = true;
-            if(number<0){buff = false} 
+            var buff = false;
+            if(number<0){buff = true} 
             var bin = [num % 2]
             for (; bin.length < 8; ) {
                 if(num > 1){
@@ -145,6 +142,7 @@
             }
             bin[0] = Number(buff);
             console.log(bin);
+            return bin;
         }
 
         var items = [
@@ -259,14 +257,7 @@
             var A = Number(document.getElementById("value1").value);
             var B = Number(document.getElementById("value2").value);
             var result = "$$A = " + A + "\\text{;           }B = " + B + "$$";
-            result += "$$A_п = ";
-            for(var i = 0; i < convertToBinary(A).length; i++){
-                 result +=convertToBinary(A)[i]
-            }
-            result += "\\textB_п = "
-            for(var i = 0; i < convertToBinary(B).length; i++){
-                 result +=convertToBinary(B)[i]
-            }
+            result += "$$A_п = "+convertToBinary(A).join('')+ "\\qquad B_п = "+ convertToBinary(B).join('') + "\\qquad -A_п = "+convertToBinary(-A).join('')+ "\\qquad -B_п = "+ convertToBinary(-B).join('') + "$$"
             
 
             document.getElementById("result2").innerHTML = result;
