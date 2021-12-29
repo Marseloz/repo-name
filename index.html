@@ -93,7 +93,7 @@
                 case 'f':
                     s=5;
                     break;
-                case 'i':
+                case 'l':
                     s=6;
                     break;
                 case 'm':
@@ -110,7 +110,10 @@
             result = "<table class=\"table1\">"
             result +="<thead><tr><th>$$x_1$$</th><th>$$x_2$$</th><th>$$x_3$$</th><th>$$x_4$$</th><th>$$"+num1+"$$</th></tr></thead><tbody>"
             for(var i = 0; i < 16; i++){
-                result +="<tr><th>$$"+num_x[3][i]+"$$</th><th>$$"+num_x[2][i]+"$$</th><th>$$"+num_x[1][i]+"$$</th><th>$$"+num_x[0][i]+"$$</th><th>$$"+resNum[i]+"$$</th><tr>"
+                if((i-sdvig >= 10)||(i-sdvig < 0)){
+                    result +="<tr><th>$$"+num_x[3][i]+"$$</th><th>$$"+num_x[2][i]+"$$</th><th>$$"+num_x[1][i]+"$$</th><th>$$"+num_x[0][i]+"$$</th><th>$$Х$$</th><tr>"
+                }
+                else result +="<tr><th>$$"+num_x[3][i]+"$$</th><th>$$"+num_x[2][i]+"$$</th><th>$$"+num_x[1][i]+"$$</th><th>$$"+num_x[0][i]+"$$</th><th>$$"+resNum[i]+"$$</th><tr>"
             }
             result += "</tbody>" 
             result += "</table> <p>"+num1+"</p>"
