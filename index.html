@@ -103,15 +103,19 @@
             <img src="Z5uXeIGx1C8.jpg">
         </div>
         <div>
+            <h2>Первая контрольная | часть 1</h2><br>
+            <input id="num" placeholder="Введите число"/><br><br>
+            <button onclick="func()">Решение</button>
+            <p id = result></p>
             <!-- поле ввода первого числа -->
-            <h2>Первая контрольная</h2><br>
+            <h2>Первая контрольная | часть 2</h2><br>
             <input id="num1" placeholder="Введите букву сегмента"/> 
             <br><br>
             <input id="num2" placeholder="Введите избыток"/>
             <!-- кнопка для рассчётов -->
             <br><br>
-            <button onclick="func()">Решение</button>
-            <p id = result></p>
+            <button onclick="func1()">Решение</button>
+            <p id = result1></p>
         </div>
         <div>
             <br><br><br><br><br><br><h2>Вторая контрольная</h2><br><br>
@@ -184,8 +188,8 @@
         [1,0,1,0,0,1,1,0,1,0],
         [1,0,0,0,0,0,1,1,1,0],
         [0,0,0,1,1,1,1,0,1,1],
-        [0,0,1,1,0,0,0,0,0,1],
         [0,1,0,1,0,0,1,1,0,0],
+        [0,0,1,1,0,0,0,0,0,1],
         ]
         var num_x = [
             [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
@@ -194,7 +198,71 @@
             [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1],
         ]
 
-        function func() {
+        function func(){
+            function ampersand(i){
+                var n = "";
+                for(i;i>0;i--){n = n + "&"}
+                //console.log(n)
+                return n
+            }
+            function pnull(i){
+                var n = "";
+                //console.log(i)
+                for(i;i>0;i--){n = n + "0"}
+                //console.log(i+"_"+n)
+                return n
+            }
+            var result = "";
+            var num1 = ""+document.getElementById("num").value
+            var integer = num1.split(',')[0];
+            var fraction = "0."+num1.split('.').join(',').split(',')[1];
+            
+            result += "$$\\begin{alignat}{5}"
+            result += integer+"&|\\underline{2\\phantom{00}}"+ampersand((integer >>> 0).toString(2).length+1)+"\\\\[-3pt]"
+            console.log((integer >>> 0).toString(2))
+            for(var i=0, num = integer; i < ((integer >>> 0).toString(2).length-1); i=i+1){
+                
+                if((i+1) != (integer >>> 0).toString(2).length-1){
+                    result += ampersand(i)+"\\phantom{00}"+Math.trunc(num%2)+"&|"+Math.trunc(num/2)+"\\phantom{"+pnull(3-(''+num).length)+"}&|\\underline{2\\phantom{00}}"+ampersand((integer >>> 0).toString(2).length-1-i)+"\\\\[-3pt]"
+                }
+                else{
+                    result += ampersand(i)+"\\phantom{00}"+Math.trunc(num%2)+"&|"+Math.trunc(num/2)+"\\phantom{"+pnull(3-(''+num).length)+"}&"+ampersand((integer >>> 0).toString(2).length-1-i)+"\\\\[-3pt]"
+                }
+                num = Math.trunc(num/2);
+            }
+            result += "\\end{alignat}$$"
+
+            var binarbuff="";
+
+            result += "$$"
+            for(var i=0, num = parseFloat(fraction); i < 9; i++){
+                result += (num).toFixed(3)
+                if(num > 0.999999){
+                    num = num-1
+                    result += "^{(-1}";
+                }
+                result += "\\\\[-3pt]*\\\\[-3pt]"
+                
+                result += "\\underline{2\\phantom{00000}}"
+                result +="\\\\[-3pt]"
+                num = num*2;
+                binarbuff += Math.trunc(num);
+                if(i+1 == 9){
+                    result += num.toFixed(3)+"\\\\[-3pt]"
+                }
+            }
+            result += "$$$$"
+            result += num1.split(',').join('.')+"_{10} = "+(integer >>> 0).toString(2)+"."+binarbuff+"_{2} = ";
+            result += Number(num1.split(',').join('.')).toString(8).split('.')[0].toUpperCase()+"."+Number(num1.split(',').join('.')).toString(8).split('.')[1].slice(0, 3).toUpperCase();
+            result += "_{8} = "+Number(num1.split(',').join('.')).toString(16).split('.')[0].toUpperCase()+"."+Number(num1.split(',').join('.')).toString(16).split('.')[1].slice(0, 2).toUpperCase();
+            result += "_{16}$$$$"
+            result += "$$"
+
+            document.getElementById("result").innerHTML = result;
+            window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')]);
+        }
+
+        function func1() {
             
         // переменная для результата
             var result;
@@ -280,7 +348,7 @@
                 }
             }
             result += "$$"
-            document.getElementById("result").innerHTML = result;
+            document.getElementById("result1").innerHTML = result;
             window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')]);
         }
         
@@ -295,5 +363,6 @@
             window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')]);
         }
     
+
     </script>
 </html>
