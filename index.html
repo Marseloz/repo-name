@@ -39,15 +39,40 @@
         }
         table, td, th {
             border: 1px solid black;
+            border-collapse: collapse;
         }
 
         .table1 {
-            border-collapse: collapse;
             width: 200px;
         }
 
-        th:last-child {
+        .tabBL {
             border-left: 2px double;
+        }
+
+        .tabBR {
+            border-right: 2px double;
+        }
+
+        .tabBT {
+            border-top: 2px double;
+        }
+        
+        .table1 tr {
+            background: #fff7e9;
+        }
+
+        .table1 tr:first-child {
+            background: rgb(255 198 145);
+        }
+
+        .table1 tr:nth-child(2n) {
+            background: rgb(255 224 199);
+        }
+
+        .table1 th {
+            min-width: 35px;
+            min-height: 40px;
         }
 
         .caption-bottom {
@@ -55,20 +80,13 @@
             bottom: 300px;
             right: 100px;
         }
-
         .caption-bottom img {
             max-width: 100%;
             height: auto;
             display: block;
-            border: 3px solid #ffbba633
+            border: 3px solid #18121033
         }
         .dbox{
-            display: inline-flex;
-            flex-direction: column;
-            list-style: none;
-            padding: 0;
-        }
-        .dbox div{
             display: inline-flex;
             flex-direction: column;
             list-style: none;
@@ -94,6 +112,39 @@
             border: 3px solid #555;
         }
 
+        .matrix {
+            width: 150px;
+            height: 150px;
+            border: 0px;
+        }        
+
+        .matrix th, td {
+            width: 16.6%;
+            height: 16.6%;
+        }
+
+        .matrix td {
+            background-color: #ffd0a4;
+        }
+
+        .matrix1 {
+            border: 0px;
+        }
+
+        .matrixbox {
+            display: flex;
+        }
+
+        .nonB{
+            color:rgba(255, 0, 0, 0.397);
+        }
+        .nonB th{
+            text-decoration: line-through;
+        }
+
+        .nonA{
+            background-color:rgb(191 191 191)!important;
+        }
     </style>
 	<title>Калькулятор</title>
 
@@ -227,7 +278,6 @@
             result += Math.trunc(integer)+"&|\\underline{2\\phantom{00}}"+ampersand((integer >>> 0).toString(2).length+1)+"\\\\[-3pt]"
             console.log((integer >>> 0).toString(2))
             for(var i=0, num = integer; i < ((integer >>> 0).toString(2).length-1); i=i+1){
-                
                 if((i+1) != (integer >>> 0).toString(2).length-1){
                     result += ampersand(i)+"\\phantom{00}"+Math.trunc(num%2)+"&|"+Math.trunc(num/2)+"\\phantom{"+pnull(3-(''+num).length)+"}&|\\underline{2\\phantom{00}}"+ampersand((integer >>> 0).toString(2).length-1-i)+"\\\\[-3pt]"
                 }
@@ -281,11 +331,12 @@
 
         function func1() {
             
-        // переменная для результата
+            // переменная для результата
             var result;
             // получаем первое и второе число
             var num1 = document.getElementById("num1").value;
             var sdvig = Number(document.getElementById("num2").value);
+            //var matrix_buff = 
 
             if(!num1) return
             var s = 0
@@ -308,31 +359,29 @@
                 case 'f':
                     s=5;
                     break;
-                case 'l':
+                case 'g':
                     s=6;
-                    break;
-                case 'm':
+                    break;    
+                case 'l':
                     s=7;
                     break;
+                case 'm':
+                    s=8;
+                    break;
                 default:
-                    
                     return;
             }
-            var resNum = Array(16).fill(0)
+            var resNum = Array(16).fill('X')
             for(var i = 0; i < 16; i++){
                 if((i-sdvig < 10)&&(i-sdvig>=0)) resNum[i] = items[s][i-sdvig];
             }
-            result = "<table class=\"table1\">"
-            result +="<thead><tr><th>$$x_1$$</th><th>$$x_2$$</th><th>$$x_3$$</th><th>$$x_4$$</th><th>$$"+num1+"$$</th></tr></thead><tbody>"
+            //console.log(resNum);
+            result = "<table class=\"table1\"><tbody><tr><th class=\"tabBR\"></th><th>$$x_1$$</th><th>$$x_2$$</th><th>$$x_3$$</th><th>$$x_4$$</th><th class=\"tabBL\">$$"+num1+"$$</th></tr>"
             for(var i = 0; i < 16; i++){
-                if((i-sdvig >= 10)||(i-sdvig < 0)){
-                    result +="<tr><th>$$"+num_x[3][i]+"$$</th><th>$$"+num_x[2][i]+"$$</th><th>$$"+num_x[1][i]+"$$</th><th>$$"+num_x[0][i]+"$$</th><th>$$Х$$</th><tr>"
-                }
-                else result +="<tr><th>$$"+num_x[3][i]+"$$</th><th>$$"+num_x[2][i]+"$$</th><th>$$"+num_x[1][i]+"$$</th><th>$$"+num_x[0][i]+"$$</th><th>$$"+resNum[i]+"$$</th><tr>"
+                result +="<tr><th class=\"tabBR\">"+i+"</th><th>$$"+num_x[3][i]+"$$</th><th>$$"+num_x[2][i]+"$$</th><th>$$"+num_x[1][i]+"$$</th><th>$$"+num_x[0][i]+"$$</th><th class=\"tabBL\">$$"+resNum[i]+"$$</th></tr>"
             }
             result += "</tbody></table><br><br> $$F_{СДНФ} = "
-            var buff = false;
-            for(var i = 0; i < 16; i++){
+            for(var i = 0, buff = false; i < 16; i++){
                 if((i-sdvig < 10)&&(i-sdvig>=0)) {
                     if(resNum[i]==1){
                         if(buff){result += "\\lor "}
@@ -364,7 +413,236 @@
                     }
                 }
             }
-            result += "$$"
+            result += "$$<br><br><h3>ЧАСТИЧНОЕ решение минимизации функции методом Квайна-мак-Класки</h3>"
+            
+            function gluingCheck(obj1, obj2) {
+                var buff = [], n = 0;
+                for(var i = 0; i < 4; i++){
+                    if(obj1[i] == obj2[i]){
+                        buff.push(obj1[i]);
+                    }
+                    else{
+                        if((n >= 1)||(obj1[i]=='-')||(obj2[i]=='-')){ return -1}
+                        buff.push('-');
+                        n++;
+                    }
+                }
+                if(n == 0) return -1;
+                return buff;
+            }
+
+            var terms = [];
+            for(var i = 0; i < resNum.length; i++){
+                if((resNum[i] == 1)||(resNum[i] == "X")){
+                    terms.push([[,,,], i]);
+                    for(var k = 0; k<4; k++){
+                        terms[terms.length-1][0][3-k] = num_x[k][i];
+                    }
+                }
+            }
+            function draw(a1, a2, checkList){
+                for(var i = 0; i < a1.length; i++){ checkList[a1[i]]++; }
+                for(var i = 0; i < a2.length; i++){ checkList[a2[i]]++; }
+                return checkList
+            }
+
+            function addArr(a1, a2){
+                var res = []
+                for(var i = 0; i < a1.length; i++){ res.push(a1[i]); }
+                for(var i = 0; i < a2.length; i++){ res.push(a2[i]); }
+                return res;
+            }
+
+            function fАccess(n, col){
+                for(var i = 0; i < col.length; i++){
+                    for(var k = 0; k < col[i].length; k++){
+                        if(n == 0){return col[i][k];}
+                        n--;
+                    }
+                }
+                return -1
+            }
+
+            function gluing(col){
+                var colbuff = [[],[],[],[],[]];
+                var checkA = 0;
+                for(var n = 0; n < col.length; n++){
+                    for(var i = 0; i < col[n].length; i++){
+                        for(var k = n; k < col.length; k++){
+                            if(k == n) continue;
+                            for(var d = 0; d < col[k].length; d++){
+                                if(col[n][i][0][col[n][i][0].length-1] >= col[k][d][0][0]) continue;
+                                if(gluingCheck(col[n][i][1], col[k][d][1]) != -1){
+                                    colbuff[n].push([
+                                        addArr(col[n][i][0], col[k][d][0]), 
+                                        gluingCheck(col[n][i][1], col[k][d][1]),
+                                        0
+                                    ]);
+                                    checkA++;
+                                }
+                            }
+                        }
+                    }
+                }
+                for(var n = 0; n < colbuff.length; n++){
+                    for(var i = 0; i < colbuff[n].length; i++){
+                        for(var k = n; k < colbuff.length; k++){
+                            if(k == n) continue;
+                            for(var d = 0; d < colbuff[k].length; d++){
+                                if(gluingCheck(colbuff[n][i][1], colbuff[k][d][1]) != -1){
+                                    colbuff[n][i][2] = 1;
+                                    colbuff[k][d][2] = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                if(checkA == 0) return -1;
+                else {
+                    console.log("->", colbuff);
+                    return colbuff;
+                }
+            }
+
+            function numGhost(arr){
+                
+                buffNum = 0;
+                for(var i = 0; i < arr.length; i++){
+                    if((resNum[arr[i]] != "X")){
+                        buffNum++;
+                    }
+                }
+                //console.log("?? -- ", arr, buffNum);
+                return buffNum;
+            }
+            
+            function fillList(col, list2){
+                list = list2;
+                for(var n = col.length - 1; n >= 0 ; n--){
+                    for(var i = col[n].length - 1; i >= 0; i--){
+                        if((col[n][i][2] == 1)||(numGhost(col[n][i][0]) == 0)) continue;
+                        list.unshift([col[n][i][0], col[n][i][1]]);
+                    }
+                }
+                return list
+            }
+
+            function printTab(name, col){
+                rez = "<table class=\"table1\"><tbody><th colspan=\"2\">"+name+"</th></tr>";
+                for(var n = 0; n < col.length; n++){
+                    for(var i = 0; i < col[n].length; i++){
+                        var str = "";
+                        var str2 = "$$\\text{";
+                        var str3 = "}$$";
+                        if(i == 0) { str +="tabBT"; }
+                        if(col[n][i][2] == 0){
+                            str +=" nonA";
+                            if(numGhost(col[n][i][0]) == 0){
+                                str2 = str3 = "";
+                                str +=" nonB";
+                            }
+                        }
+                        rez +="<tr class=\""+str+"\"><th>"+str2+"("+col[n][i][0]+")"+str3+"</th><th>"+str2+col[n][i][1].join('')+str3+"</th></tr>";
+                    }
+                }
+                rez += "</tbody></table>"
+                return rez
+            }
+
+
+            var col1 = [[],[],[],[],[]];
+            for(var i = 0; i < terms.length; i++){
+                var one_coll = 0;
+                for(var k = 0; k < terms[i][0].length; k++){
+                    if(terms[i][0][k] == 1) one_coll++;
+                }
+                col1[one_coll].push([[terms[i][1]], terms[i][0]]);
+            }
+            
+            result += "<dir class=\"matrixbox\">"
+            result += "<dir>" + printTab("Минтермы", col1) + "</dir>";
+
+            var x_list = [];
+            for(var i = 1, buffCol = col1; buffCol != -1; i++){
+                buffCol = gluing(buffCol);
+                if(buffCol != -1) {
+                    col1 = buffCol;
+                    x_list = fillList(col1, x_list);
+                    result += "<dir>" + printTab("Импликанты "+i+"-го уровня", col1) + "</dir>";
+                }
+            }
+
+            result += "</dir><dir>"
+            result += "<table class=\"table1\"><tbody><tr><th class=\"tabBR\"></th>"
+            for(var k= 0; k < resNum.length; k++){
+                if(resNum[k] != 1){ continue; }
+                result +="<th>"+k+"</th>";
+            }
+            result += "</tr>"
+            for(var i = 0; i < x_list.length; i++){
+                if(x_list[i][0] == 0){continue}
+                result +="<tr><th class=\"tabBR\">"+x_list[i][1].join('')+"</th>"
+                for(var k= 0; k < resNum.length; k++){
+                    if(resNum[k] != 1){ continue; }
+                    if(x_list[i][0].includes(k) == true){
+                        result +="<th>x</th>";
+                    }else{
+                        result +="<th></th>";
+                    }
+                }
+                result +="</tr>"
+            }
+            result += "</tbody></table><br><br>"
+            result += "</dir>"
+
+            
+            
+            
+            
+            console.log(terms);
+            console.log(col1);
+            console.log(x_list);
+
+
+
+            result += "<br><br><br><h3>Построение карты Карно</h3><dir class=\"matrixbox\"><dir><table class=\"matrix\"><tbody>"
+            result += "<tr><th class=\"matrix1\"></th> <td colspan=\"2\">$$\\bar{x_3}$$</td> <td colspan=\"2\">$$x_3$$</td> <th class=\"matrix1\"></th> </tr>"
+            result += "<tr><td rowspan=\"2\" >$$\\bar{x_1}$$</td>  <th>"+resNum[0 ]+"</th> <th>"+resNum[1 ]+"</th> <th>"+resNum[3 ]+"</th> <th>"+resNum[2 ]+"</th>  <td>$$\\bar{x_2}$$</td></tr>"
+            result += "<tr>                                        <th>"+resNum[4 ]+"</th> <th>"+resNum[5 ]+"</th> <th>"+resNum[7 ]+"</th> <th>"+resNum[6 ]+"</th>  <td rowspan=\"2\">$$x_2$$</td></tr>"
+            result += "<tr><td rowspan=\"2\" >$$x_1$$</td>         <th>"+resNum[12]+"</th> <th>"+resNum[13]+"</th> <th>"+resNum[15]+"</th> <th>"+resNum[14]+"</th>  </tr>"
+            result += "<tr>                                        <th>"+resNum[8 ]+"</th> <th>"+resNum[9 ]+"</th> <th>"+resNum[11]+"</th> <th>"+resNum[10]+"</th>  <td>$$\\bar{x_2}$$</td></tr>"
+            result += "<tr><th class=\"matrix1\"></th> <td>$$\\bar{x_4}$$</td> <td colspan=\"2\">$$x_4$$</td> <td>$$\\bar{x_4}$$</td> <th class=\"matrix1\"></th></tr>"
+            result += "</tbody></table><br>По Википедии</dir>"
+
+            result += "<dir><table class=\"matrix\"><tbody>"
+            result += "<tr><th class=\"matrix1\"></th> <td colspan=\"2\">$$\\bar{x_3}$$</td> <td colspan=\"2\">$$x_3$$</td> <th class=\"matrix1\"></th> </tr>"
+            result += "<tr><td rowspan=\"2\" >$$\\bar{x_1}$$</td>  <th>"+0+"</th> <th>"+1+"</th> <th>"+3+"</th> <th>"+2+"</th>  <td>$$\\bar{x_2}$$</td></tr>"
+            result += "<tr>                                        <th>"+4+"</th> <th>"+5+"</th> <th>"+7+"</th> <th>"+6+"</th>  <td rowspan=\"2\">$$x_2$$</td></tr>"
+            result += "<tr><td rowspan=\"2\" >$$x_1$$</td>         <th>"+12+"</th> <th>"+13+"</th> <th>"+15+"</th> <th>"+14+"</th>  </tr>"
+            result += "<tr>                                        <th>"+8+"</th> <th>"+9+"</th> <th>"+11+"</th> <th>"+10+"</th>  <td>$$\\bar{x_2}$$</td></tr>"
+            result += "<tr><th class=\"matrix1\"></th> <td>$$\\bar{x_4}$$</td> <td colspan=\"2\">$$x_4$$</td> <td>$$\\bar{x_4}$$</td> <th class=\"matrix1\"></th></tr>"
+            result += "</tbody></table><br>Номера термов</dir>"
+    
+            result += "<dir><table class=\"matrix\"><tbody>"
+            result += "<tr><th class=\"matrix1\"></th> <td colspan=\"2\">$$x_1$$</td> <td colspan=\"2\">$$\\bar{x_1}$$</td> <th class=\"matrix1\"></th> </tr>"
+            result += "<tr><td rowspan=\"2\" >$$x_2$$</td>         <th>"+resNum[12]+"</th> <th>"+resNum[14]+"</th> <th>"+resNum[6 ]+"</th> <th>"+resNum[4 ]+"</th>  <td>$$\\bar{x_4}$$</td></tr>"
+            result += "<tr>                                        <th>"+resNum[13]+"</th> <th>"+resNum[15]+"</th> <th>"+resNum[7 ]+"</th> <th>"+resNum[5 ]+"</th>  <td rowspan=\"2\">$$x_4$$</td></tr>"
+            result += "<tr><td rowspan=\"2\" >$$\\bar{x_2}$$</td>  <th>"+resNum[9 ]+"</th> <th>"+resNum[11]+"</th> <th>"+resNum[3 ]+"</th> <th>"+resNum[1 ]+"</th>  </tr>"
+            result += "<tr>                                        <th>"+resNum[8 ]+"</th> <th>"+resNum[10]+"</th> <th>"+resNum[2 ]+"</th> <th>"+resNum[0 ]+"</th>  <td>$$\\bar{x_4}$$</td></tr>"
+            result += "<tr><th class=\"matrix1\"></th> <td>$$\\bar{x_3}$$</td> <td colspan=\"2\">$$x_3$$</td> <td>$$\\bar{x_3}$$</td> <th class=\"matrix1\"></th></tr>"
+            result += "</tbody></table><br>По Ефремову</dir>"
+            
+            result += "<dir><table class=\"matrix\"><tbody>"
+            result += "<tr><th class=\"matrix1\"></th> <td colspan=\"2\">$$x_1$$</td> <td colspan=\"2\">$$\\bar{x_1}$$</td> <th class=\"matrix1\"></th> </tr>"
+            result += "<tr><td rowspan=\"2\" >$$x_2$$</td>         <th>"+12+"</th> <th>"+14+"</th> <th>"+6+"</th> <th>"+4+"</th>  <td>$$\\bar{x_4}$$</td></tr>"
+            result += "<tr>                                        <th>"+13+"</th> <th>"+15+"</th> <th>"+7+"</th> <th>"+5+"</th>  <td rowspan=\"2\">$$x_4$$</td></tr>"
+            result += "<tr><td rowspan=\"2\" >$$\\bar{x_2}$$</td>  <th>"+9+"</th> <th>"+11+"</th> <th>"+3+"</th> <th>"+1+"</th>  </tr>"
+            result += "<tr>                                        <th>"+8+"</th> <th>"+10+"</th> <th>"+2+"</th> <th>"+0+"</th>  <td>$$\\bar{x_4}$$</td></tr>"
+            result += "<tr><th class=\"matrix1\"></th> <td>$$\\bar{x_3}$$</td> <td colspan=\"2\">$$x_3$$</td> <td>$$\\bar{x_3}$$</td> <th class=\"matrix1\"></th></tr>"
+            result += "</tbody></table><br>Номера термов</dir>"        
+            result += "</dir>"
+
+
             document.getElementById("result1").innerHTML = result;
             window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')]);
         }
