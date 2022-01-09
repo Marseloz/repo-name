@@ -20,6 +20,20 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .button2 {
+            background-color: #000000;
+            font-size: 3.4vw;
+            border: none;
+            color: white;
+            padding: 20px 32px;
+            text-align: center;
+            margin: 4px 4px;
+            opacity: 0.6;
+            transition: 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
         button:hover {opacity: 1}
         body{
@@ -499,7 +513,7 @@
                 }
                 if(checkA == 0) return -1;
                 else {
-                    console.log("->", colbuff);
+                    //console.log("->", colbuff);
                     return colbuff;
                 }
             }
@@ -521,7 +535,7 @@
                 for(var n = col.length - 1; n >= 0 ; n--){
                     for(var i = col[n].length - 1; i >= 0; i--){
                         if((col[n][i][2] == 1)||(numGhost(col[n][i][0]) == 0)) continue;
-                        list.unshift([col[n][i][0], col[n][i][1]]);
+                        list.unshift([col[n][i][0], col[n][i][1], numGhost(col[n][i][0])]);
                     }
                 }
                 return list
@@ -592,20 +606,60 @@
                 }
                 result +="</tr>"
             }
-            result += "</tbody></table><br><br>"
+            result += "</tbody></table><br><br>Далее вам остаётся только проанализировать таблицу.  Если что, то вот<br><br><form action=\"http://www.32x8.com/var4.html\" target=\"_blank\"><button class = \"button2\">Зарубежный онлайн калькулятор</button></form>"
             result += "</dir>"
 
-            
-            
-            
-            
-            console.log(terms);
-            console.log(col1);
+            var minterm  = [[],[]];
+            var rezTerm  = [];
+            for(var i = 0; i < resNum.length; i++){
+                if(resNum[i] != 1){continue}
+                minterm[0].push(i);
+                minterm[1].push(0);
+            }
+            for(var i = 0; i < minterm[0].length; i++){
+                if(minterm[1][i] == 1) continue;
+                var n = 0, bNum = 0;
+                for(var k = 0; k < x_list.length; k++){
+                    if(x_list[k][0].includes(minterm[0][i]) == true){
+                        n++;
+                        bNum = k;
+                    }
+                }
+                if(n==1){
+                    rezTerm.push(x_list[bNum]);
+                    for(var k = 0; k < x_list[bNum][0].length; k++){
+                        console.log(x_list[bNum][0][k], minterm[0].indexOf(x_list[bNum][0][k]),"====",minterm[1][minterm[0].indexOf(x_list[bNum][0][k])]);
+                        minterm[1][minterm[0].indexOf(x_list[bNum][0][k])] = 1;
+                    }
+                }
+            }
+            for(var i = 0; i < minterm[0].length; i++){
+                if(minterm[1][i] == 1) continue;
+                var max = 0, bNum = 0;
+                for(var k = 0; k < x_list.length; k++){
+                    if(x_list[k][0].includes(minterm[0][i]) == true){
+                        if(max < numGhost(x_list[k][0])){
+                            max = numGhost(x_list[k][0]);
+                            bNum = k;
+                        }
+                    }
+                }
+                console.log(bNum, max, i);
+                for(var k = 0; k < x_list[bNum][0].length; k++){
+                    if(minterm[1][minterm[0].indexOf(x_list[bNum][0][k])] == 1) break;
+                    if(k+1 == x_list[bNum][0].length){
+                        rezTerm.push(x_list[bNum]);
+                    }
+                }
+                minterm[1][i] = 1;
+            }
+            console.log(minterm);
+            console.log(rezTerm);
             console.log(x_list);
+            
 
 
-
-            result += "<br><br><br><h3>Построение карты Карно</h3><dir class=\"matrixbox\"><dir><table class=\"matrix\"><tbody>"
+            result += "<br><br><br><h3>Построение карты Карно</h3><br>(ниже генерируется стартовые карты в разных вариантах)<dir class=\"matrixbox\"><dir><table class=\"matrix\"><tbody>"
             result += "<tr><th class=\"matrix1\"></th> <td colspan=\"2\">$$\\bar{x_3}$$</td> <td colspan=\"2\">$$x_3$$</td> <th class=\"matrix1\"></th> </tr>"
             result += "<tr><td rowspan=\"2\" >$$\\bar{x_1}$$</td>  <th>"+resNum[0 ]+"</th> <th>"+resNum[1 ]+"</th> <th>"+resNum[3 ]+"</th> <th>"+resNum[2 ]+"</th>  <td>$$\\bar{x_2}$$</td></tr>"
             result += "<tr>                                        <th>"+resNum[4 ]+"</th> <th>"+resNum[5 ]+"</th> <th>"+resNum[7 ]+"</th> <th>"+resNum[6 ]+"</th>  <td rowspan=\"2\">$$x_2$$</td></tr>"
