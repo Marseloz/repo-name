@@ -348,7 +348,7 @@
             // переменная для результата
             var result;
             // получаем первое и второе число
-            var num1 = document.getElementById("num1").value;
+            var num1 = document.getElementById("num1").value.toLowerCase();
             var sdvig = Number(document.getElementById("num2").value);
             //var matrix_buff = 
 
@@ -390,7 +390,7 @@
                 if((i-sdvig < 10)&&(i-sdvig>=0)) resNum[i] = items[s][i-sdvig];
             }
             //console.log(resNum);
-            result = "<table class=\"table1\"><tbody><tr><th class=\"tabBR\"></th><th>$$x_1$$</th><th>$$x_2$$</th><th>$$x_3$$</th><th>$$x_4$$</th><th class=\"tabBL\">$$"+num1+"$$</th></tr>"
+            result = "<br><h3>Таблица истинности</h3><br><table class=\"table1\"><tbody><tr><th class=\"tabBR\"></th><th>$$x_1$$</th><th>$$x_2$$</th><th>$$x_3$$</th><th>$$x_4$$</th><th class=\"tabBL\">$$"+num1+"$$</th></tr>"
             for(var i = 0; i < 16; i++){
                 result +="<tr><th class=\"tabBR\">"+i+"</th><th>$$"+num_x[3][i]+"$$</th><th>$$"+num_x[2][i]+"$$</th><th>$$"+num_x[1][i]+"$$</th><th>$$"+num_x[0][i]+"$$</th><th class=\"tabBL\">$$"+resNum[i]+"$$</th></tr>"
             }
@@ -659,7 +659,7 @@
             
 
 
-            result += "<br><br><br><h3>Построение карты Карно</h3><br>(ниже генерируются карты в разных вариантах)<dir class=\"matrixbox\"><dir><table class=\"matrix\"><tbody>"
+            result += "<br><br><br><h3>Построение карты Карно</h3><br>(ниже генерируются стартовые карты в разных вариантах)<dir class=\"matrixbox\"><dir><table class=\"matrix\"><tbody>"
             result += "<tr><th class=\"matrix1\"></th> <td colspan=\"2\">$$\\bar{x_3}$$</td> <td colspan=\"2\">$$x_3$$</td> <th class=\"matrix1\"></th> </tr>"
             result += "<tr><td rowspan=\"2\" >$$\\bar{x_1}$$</td>  <th>"+resNum[0 ]+"</th> <th>"+resNum[1 ]+"</th> <th>"+resNum[3 ]+"</th> <th>"+resNum[2 ]+"</th>  <td>$$\\bar{x_2}$$</td></tr>"
             result += "<tr>                                        <th>"+resNum[4 ]+"</th> <th>"+resNum[5 ]+"</th> <th>"+resNum[7 ]+"</th> <th>"+resNum[6 ]+"</th>  <td rowspan=\"2\">$$x_2$$</td></tr>"
