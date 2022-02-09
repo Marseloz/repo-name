@@ -386,8 +386,8 @@
                     return;
             }
             var resNum = Array(16).fill('X')
-            for(var i = 0; i < 16; i++){
-                if((i-sdvig < 10)&&(i-sdvig>=0)) resNum[i] = items[s][i-sdvig];
+            for(var i = 0; i < 10; i++){
+               resNum[(i+sdvig)*((i+sdvig)<16)+((i+sdvig)-16)*((i+sdvig)>=16)] = items[s][i];
             }
             //console.log(resNum);
             result = "<br><h3>Таблица истинности</h3><br><table class=\"table1\"><tbody><tr><th class=\"tabBR\"></th><th>$$x_1$$</th><th>$$x_2$$</th><th>$$x_3$$</th><th>$$x_4$$</th><th class=\"tabBL\">$$"+num1+"$$</th></tr>"
