@@ -396,7 +396,7 @@
             }
             result += "</tbody></table><br><br> $$F_{СДНФ} = "
             for(var i = 0, buff = false; i < 16; i++){
-                if((i-sdvig < 10)&&(i-sdvig>=0)) {
+                //if((i-sdvig < 10)&&(i-sdvig>=0)) {
                     if(resNum[i]==1){
                         if(buff){result += "\\lor "}
                         buff = true;
@@ -408,11 +408,11 @@
                             }
                         }
                     }
-                }
+                //}
             }
             result += "$$<br><br>$$F_{СКНФ} = "
             for(var i = 0; i < 16; i++){
-                if((i-sdvig < 10)&&(i-sdvig>=0)) {
+                //if((i-sdvig < 10)&&(i-sdvig>=0)) {
                     if(resNum[i]==0){
                         result += "(";
                         for(var k = 3; k>=0; k--){
@@ -425,7 +425,7 @@
                         }
                         result += ")"
                     }
-                }
+                //}
             }
             result += "$$<br><br><h3>ЧАСТИЧНОЕ решение минимизации функции методом Квайна-мак-Класки</h3>"
             
